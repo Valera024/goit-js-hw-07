@@ -14,23 +14,23 @@ list.insertAdjacentHTML("afterbegin", listEl);
 
 console.log(galleryItems);
 
-function keydownHandler(event, modalImg) {
-    if (event.key === "Escape") {
-        modalImg.close();
-    }
-}
-
 list.addEventListener("click", (event) => {
     event.preventDefault();
     const originalImg = event.target.dataset.source;
     
-    const modalImg = basicLightbox.create(`<img src="${originalImg}">`, {     
-        onShow: (modalImg) => {
-            window.addEventListener("keydown", (event) => keydownHandler(event, modalImg))
+    const instance = basicLightbox.create(`<img src="${originalImg}">`, {     
+        onShow: (instance) => {
+            window.addEventListener("keydown", onKeyPress)
         },
-        onClose: (modalImg) => {
-            window.removeEventListener("keydown", (event) => keydownHandler(event, modalImg))
+        onClose: (instance) => {
+            window.removeEventListener("keydown", onKeyPress)
         }
     });
-    modalImg.show();
+
+    const onKeyPress = (event) => {
+        if (event.key === "Escape") {
+            instance.close();
+        }
+    }
+    instance.show();
 })
